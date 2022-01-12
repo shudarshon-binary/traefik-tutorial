@@ -1,0 +1,35 @@
+version: "3.3"
+services:
+    web-app:
+        image: "containous/whoami"
+        labels:
+          - "traefik.http.routers.web-app.rule=Host(`example.com`) || (Host(`example.test`) && Path(`/app1`))"
+          - "traefik.http.routers.web-app.entrypoints=web"
+          # container_port
+          - "traefik.http.services.web-app.loadbalancer.server.port=80"
+        networks:
+          proxy_internal:
+    traefik:
+        image: traefik:v2.2
+        container_name: traefik
+        depends_on:
+          - "web-app"
+        ports:
+          - "80:80"       # web
+          - "8080:8080"   # api
+          - "8082:8082"   # ping port
+        volumes:
+          - /var/run/docker.sock:/var/run/docker.sock
+          - ./traefik.toml:/etc/traefik/traefik.toml
+          - ./config.toml:/etc/traefik/config.toml
+        labels:
+          # core_config
+          - "traefik.enable=true"
+        networks:
+          - web_gateway
+          - proxy_internal
+networks:
+  web_gateway:
+    internal: false
+  proxy_internal:
+    internal: true
