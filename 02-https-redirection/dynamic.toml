@@ -1,0 +1,8 @@
+################################################################
+# TLS configuration
+################################################################
+
+[tls]
+  [[tls.certificates]]
+    certFile = "/ssl/crt/local-cert.pem"
+    keyFile = "/ssl/key/local-key.pem"
