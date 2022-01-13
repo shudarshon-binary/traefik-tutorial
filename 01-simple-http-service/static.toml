@@ -87,11 +87,3 @@ watch = true
 # Expose containers by default in traefik
 # If set to false, containers that don't have `traefik.enable=true` will be ignored
 # exposedByDefault = false
-
-################################################################
-# File configuration backend
-################################################################
-
-[providers.file]
-  filename = "/etc/traefik/config.toml"
-  watch = true

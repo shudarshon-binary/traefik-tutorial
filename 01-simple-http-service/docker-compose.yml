@@ -3,6 +3,7 @@ services:
     web-app:
         image: "containous/whoami"
         labels:
+          - "traefik.enable=true"
           - "traefik.http.routers.web-app.rule=Host(`example.com`) || (Host(`example.test`) && Path(`/app1`))"
           - "traefik.http.routers.web-app.entrypoints=web"
           # container_port
@@ -19,9 +20,9 @@ services:
           - "8080:8080"   # api
           - "8082:8082"   # ping port
         volumes:
-          - /var/run/docker.sock:/var/run/docker.sock
-          - ./traefik.toml:/etc/traefik/traefik.toml
-          - ./config.toml:/etc/traefik/config.toml
+          - /var/run/docker.sock:/var/run/docker.sock:ro
+          - ./static.toml:/etc/traefik/traefik.toml:ro
+          #- ./config.toml:/etc/traefik/dtoml:ro
         labels:
           # core_config
           - "traefik.enable=true"
